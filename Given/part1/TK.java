@@ -16,7 +16,7 @@ public enum TK {
     AF,      // af
     TO,      // to
     ST,      // st
-  
+    MINUS,   //minus 
     ASSIGN,   // :=
     LPAREN,   // (
     RPAREN,   // )
