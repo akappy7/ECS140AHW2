@@ -94,6 +94,8 @@ public class Scan {
                         return ccase1('*',TK.TIMES);
                     case '=':
                         return ccase1('=',TK.EQ);
+                    case '+':
+                        return ccase1('+',TK.PLUS);
 
 // QUESTION 3:  What does the following case and the code in it do?
 
@@ -112,6 +114,7 @@ public class Scan {
                         return ccase2('[',']',TK.BOX);
                     case '-':
                         return ccase1or2('-','>',TK.MINUS,TK.ARROW);
+
 
                     case EOF:
                         got_eof = true;
@@ -158,6 +161,12 @@ public class Scan {
         return new Token(r, new String(String.valueOf(c)), linenumber);
     }
 
+
+    //Is gonna test the next character if it matches the second argument of ccaselor2
+    //This is for terminals which share begining characters, IE '->' and '-'
+    //If the second character matches it returns second token,
+    //if not it returns the first and 'putsback' the character which didn't match the second token.
+    //The putback character is then read using the normal process.
     private Token ccase1or2(char c1, char c2, TK r1, TK r2) {
         c = getchar();
         if (c == c2) {
@@ -172,6 +181,8 @@ public class Scan {
         }
     }
 
+    //Similar to ccaselor2 but handles tokens which are specified by two characters but don't chare
+    //characters with any other terminal. IE ':='
     private Token ccase2(char c1, char c2, TK r) {
         c = getchar();
         if (c == c2) {
@@ -202,7 +213,7 @@ public class Scan {
         } while( myisalpha((char) c) && k < MAXLEN_ID );
         putback = true;
         if( myisalpha((char) c) && k == MAXLEN_ID ) {
-            do { c = getchar(); } while(myisalpha((char) c));
+            do { c = getchar(); } while(myisalpha((char) c));//flushes rest of identifier
             System.err.println("scan: identifier too long -- truncated to "
                                + str);
         }

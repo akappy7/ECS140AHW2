@@ -1,0 +1,10 @@
+#1
+If putback has been set as true a new character won't be read in and the last character will be processed.
+It's used to read the next character for terminals which require multiple characters, among other things.
+
+#2
+true, '*'
+
+#3
+Once a '/' is read in it's not clear if its for division or not equal. ccaselor2 is called which will check
+the next character to decide if its just '/' or '/='. Putback will be flagged true if its just '/'
