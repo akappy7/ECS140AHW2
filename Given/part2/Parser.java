@@ -15,7 +15,11 @@ public class Parser {
         this.scanner = scanner;
         scan();
         program();
-        if( tok.kind != TK.EOF )
+	if(tok.kind == TK.NUM)
+	{
+	    parse_error("HI arman");
+	}
+        //if( tok.kind != TK.EOF )
             parse_error("junk after logical end of program");
     }
 
