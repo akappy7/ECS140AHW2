@@ -42,8 +42,11 @@ public class SymbolTable {
 	}
 
 	public TableResponse assignSym(String ID, int line) {
-		if(findSymbols(ID) != null)
+		ArrayList<Symbol> symbols = findSymbols(ID);
+		if(symbols.size() != 0) {
+			symbols.get(symbols.size() - 1).assLines.add(line);
 			return(new TableResponse(true, ""));
+		}
 		else
 			return new TableResponse(false, "not declared");
 	}
@@ -53,10 +56,11 @@ public class SymbolTable {
 		stack.push(new ArrayList<Symbol>());
 		current = stack.peek();
 	}
+
 //if theres a symbol with same name at current depth fail, otherwise true
 	public TableResponse decSym(String ID, int line) {
 		for(Symbol s : current) {
-			if(s.depth == depth)
+			if(s.depth == depth && s.ID.contentEquals(ID))
 				return(new TableResponse(false, "redeclared"));
 		}
 		Symbol s = new Symbol(ID, depth, line);
@@ -66,21 +70,42 @@ public class SymbolTable {
 
 	public void endBlock() {
 		depth--;
-		stack.pop();
+		history.add(stack.pop()); //add discarded to history, will preserve order
 		if(depth >= 0)
 			current = stack.peek();
 		else
 			current = null;//this may catch errors down the road
 	}
 
+	//operating on assumption can use uninitialized variables and same scoping as C
+	//IE hiding
 	public TableResponse useSym(String ID, int line) {
-		if(findSymbols(ID) != null) {
+		ArrayList<Symbol> symbols = findSymbols(ID);
+		if(symbols.size() != 0) {
+			symbols.get(symbols.size() - 1).useLines.add(line);
 			return new TableResponse(true, "");
 		} else
 			return new TableResponse(false,"not declared");
 	}
 
-	private Symbol[] findSymbols(String ID) { //returns an array of all symbols with given ID
+	public void printSym(String ID) {
+		for(Symbol s : findSymbols(ID) ) {
+			System.out.println( String.valueOf(s.depth) );
+		}
+	}
+
+	public void printHistory() {
+		for(ArrayList<Symbol> list : history) {
+			for(Symbol s : list) {
+				System.out.println("ID: " + s.ID);
+				System.out.println("	declared on: " + String.valueOf(s.decLine));
+				System.out.println("	at depth: " + String.valueOf(s.depth));
+			}
+		}
+	}
+
+	//the last Symbols in the return array should be the most recently pushed (deepest)
+	private ArrayList<Symbol> findSymbols(String ID) { //returns an array of all symbols with given ID
 		ArrayList<Symbol> retArList = new ArrayList<Symbol>();
 
 		for(ArrayList<Symbol> list : stack) {
@@ -92,11 +117,6 @@ public class SymbolTable {
 				}
 			}
 		}
-		if(retArList.size() == 0)
-			return null;
-		else {
-			Symbol retAr[] = new Symbol[retArList.size()];
-			return(retArList.toArray(retAr));
-		}
+		return(retArList);
 	}
 }

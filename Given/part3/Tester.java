@@ -22,6 +22,11 @@ public class Tester {
 			} else if(input.contentEquals("useSym")) {
 				name = console.readLine("name: ");
 				System.out.println( t.useSym(name, i).success );
+			}else if(input.contentEquals("printSym")) {
+				name = console.readLine("name: ");
+				t.printSym(name);
+			} else if(input.contentEquals("printH")) {
+				t.printHistory();
 			} else {
 				System.out.println("nope" + input);
 			}
