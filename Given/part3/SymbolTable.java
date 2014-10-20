@@ -33,10 +33,12 @@ public class SymbolTable {
 	private Stack<ArrayList<Symbol>> stack;
 	private int depth;
 	private ArrayList<Symbol> current;
+	public ArrayList<ArrayList<Symbol>> history;
 
 	public SymbolTable() {
 		depth = -1; //every block increments, first block needs to be at depth 0
 		stack = new Stack<ArrayList<Symbol>>();
+		history = new ArrayList<ArrayList<Symbol>>();
 	}
 
 	public TableResponse assignSym(String ID, int line) {
@@ -67,10 +69,15 @@ public class SymbolTable {
 		stack.pop();
 		if(depth >= 0)
 			current = stack.peek();
+		else
+			current = null;//this may catch errors down the road
 	}
 
 	public TableResponse useSym(String ID, int line) {
-		return null;
+		if(findSymbols(ID) != null) {
+			return new TableResponse(true, "");
+		} else
+			return new TableResponse(false,"not declared");
 	}
 
 	private Symbol[] findSymbols(String ID) { //returns an array of all symbols with given ID
