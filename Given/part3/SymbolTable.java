@@ -24,6 +24,28 @@
 //line number of declaration, assignment, and use needs to be maintained
 
 //Not sure if variable hiding is allowed
+
+
+
+//Dearest Arman,
+
+//Within the parser just have a member variable SymbolTable.
+//Whenever you declare a variable use decSym(variablesID, lineNumber)
+//assign use assignSym(variablesID, lineNumber)
+//use a variable use useSym(variablesID, lineNumber)
+
+//These functions return a TableResponse object with members 'success' and 
+// 'response'. success lets you know if the operation worked and response 
+// contains a really basic error message if the operation failed.
+
+//when you begin a new block call begBlock() and when you end a
+// block use endBlock()
+//	These functions don't return anything since they shouldn't fail
+
+//I tested everything and it seemed to work alright but idk if it'll hold with an actual program
+//Don't worry about texting me if you don't understand any of the code,
+// its kinda messy so i don't blame you
+
 import java.util.Stack;
 import java.util.ArrayList;
 import java.util.Iterator;
