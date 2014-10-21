@@ -1,0 +1,3 @@
+if b < 3 -> i := 4 fi
+rest:=4+3*90
+do ids >= 23 -> res := 4 od
