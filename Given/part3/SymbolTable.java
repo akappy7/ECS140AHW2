@@ -70,7 +70,7 @@ public class SymbolTable {
 
 	public void endBlock() {
 		depth--;
-		history.add(stack.pop()); //add discarded to history, will preserve order
+		history.add(0, stack.pop()); //add discarded to history, will preserve order
 		if(depth >= 0)
 			current = stack.peek();
 		else
@@ -100,6 +100,14 @@ public class SymbolTable {
 				System.out.println("ID: " + s.ID);
 				System.out.println("	declared on: " + String.valueOf(s.decLine));
 				System.out.println("	at depth: " + String.valueOf(s.depth));
+				System.out.print("	used at: ");
+				for(Integer i : s.useLines)
+					System.out.print(String.valueOf(i) + ' ');
+				System.out.println(' ');
+				System.out.print("	assigned at: ");
+				for(Integer i : s.assLines)
+					System.out.print(String.valueOf(i) + ' ');
+				System.out.println(' ');
 			}
 		}
 	}
